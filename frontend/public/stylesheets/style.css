@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+/* General Styles */
+body {
+    font-family: 'Share Tech Mono', monospace;
+    background-color: #000000; /* Deep black background */
+    color: #00ff99; /* Subtle green (matrix-style) */
+    text-align: center;
+    padding: 40px;
+    margin: 0;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.8); /* Subtle transparency */
+    padding: 12px 25px;
+    border-bottom: 1px solid #008f11; /* Thin green line */
+}
+
+/* Navbar Logo */
+.navbar .logo img {
+    height: 40px; /* Small and subtle */
+    width: auto;
+    opacity: 0.85; /* Soft presence */
+}
+
+/* Navigation Links */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 12px;
+}
+
+.nav-links a {
+    color: #00ff99;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 4px 10px;
+    transition: 0.2s ease-in-out;
+    border-radius: 3px;
+    opacity: 0.85;
+}
+
+/* Hover Effect - Thin Green Glow */
+.nav-links a:hover {
+    color: #00cc66;
+    text-shadow: 0px 0px 5px #00cc66;
+    transform: scale(1.05);
+}
+
+/* Hero Section */
+.hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 75vh;
+    text-align: center;
+    background-color: #000000;
+}
+
+/* Hero Content */
+.hero-content {
+    max-width: 500px;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #008f11;
+    box-shadow: 0px 0px 8px rgba(0, 143, 17, 0.2);
+    opacity: 0.9;
+}
+
+.hero h1 {
+    font-size: 28px;
+    color: #00ff99;
+    letter-spacing: 1px;
+}
+
+.hero p {
+    font-size: 14px;
+    opacity: 0.75;
+}
+
+.hero-logo {
+    max-width: 120px; /* Adjust the size */
+    height: auto; /* Maintain aspect ratio */
+    opacity: 0.9;
+    filter: drop-shadow(0px 0px 5px #00ff99);
+}
+
+/* Cyber Minimalist Button */
+.cta-btn {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 6px 14px;
+    background: none;
+    color: #00ff99;
+    font-size: 14px;
+    text-decoration: none;
+    border: 1px solid #00ff99;
+    border-radius: 3px;
+    transition: 0.3s ease-in-out;
+    font-weight: bold;
+}
+
+.cta-btn:hover {
+    background-color: #00ff99;
+    color: black;
+    box-shadow: 0px 0px 8px #00ff99;
+}
+
+/* Matrix-Style Blinking Cursor */
+@keyframes cursorBlink {
+    50% { opacity: 0; }
+}
+
+.cursor {
+    display: inline-block;
+    width: 6px;
+    height: 14px;
+    background-color: #00ff99;
+    margin-left: 5px;
+    animation: cursorBlink 1s infinite;
+}
