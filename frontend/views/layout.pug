@@ -3,17 +3,18 @@ html(lang="en")
   head
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
-    title known or not
+    title= title
     link(rel="stylesheet" href="/stylesheets/style.css")
   body
     nav.navbar
       div.logo 
-        img(src="/images/logo.png" alt="Logo") 
+        a(href="/" ID="index")
+          img(src="/images/logo.png" alt="Logo") 
       ul.nav-links
-        li: a(href="#") home
-        li: a(href="#") log in
+        // none conected users
+        li: a(href="/sign_up" ID="sign_up") sign up
+        li: a(href="/log_in" ID="log_in") log in
+        // conected users
 
     block content
-
-    script(src="/js/script.js")
 

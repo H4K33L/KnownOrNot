@@ -52,7 +52,7 @@ body {
 }
 
 /* Hero Section */
-.hero {
+.box {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -62,7 +62,7 @@ body {
 }
 
 /* Hero Content */
-.hero-content {
+.box-content {
     max-width: 500px;
     padding: 15px;
     border-radius: 5px;
@@ -71,18 +71,18 @@ body {
     opacity: 0.9;
 }
 
-.hero h1 {
+.box h1 {
     font-size: 28px;
     color: #00ff99;
     letter-spacing: 1px;
 }
 
-.hero p {
+.box p {
     font-size: 14px;
     opacity: 0.75;
 }
 
-.hero-logo {
+.box-logo {
     max-width: 120px; /* Adjust the size */
     height: auto; /* Maintain aspect ratio */
     opacity: 0.9;
@@ -122,4 +122,45 @@ body {
     background-color: #00ff99;
     margin-left: 5px;
     animation: cursorBlink 1s infinite;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.popup-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+}
+
+.terms-text {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#closeTerms {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#closeTerms:hover,
+#closeTerms:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
