@@ -34,7 +34,7 @@ document.getElementById('signIn').onclick = function () {
 // useful you khow
 socket.on("EmitUuid", UserUuid => {
   document.cookie = "UserUuid="+UserUuid;
-  document.location.href="/My_Hero_App"
+  document.location.href="/"
 });
 
 // if the server send an error mesage
