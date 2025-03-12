@@ -1,0 +1,51 @@
+extends layout
+
+block content
+
+    #acountPopup.popup
+        .popup-content
+
+        form(action="/home/update/"+uuid, method="POST")
+            .form-group
+                input#username(type="text" name="username" required value=""+name)
+  
+            .form-group
+                input#email(type="email" name="email" required value=""+email)
+  
+            .form-group
+                label(for="newpassword") New password:
+                input#password(type="password" name="newpassword")
+  
+            .form-group
+                label(for="confirm_newpassword") Confirm new password:
+                input#confirm-password(type="password" name="confirm_newpassword")
+
+            .form-group
+                label(for="password") Password:
+                input#password(type="password" name="password" required)
+            
+            button(type="submit") Update
+        
+        form(action="/home/delete/" + uuid, method="POST")
+            .form-group
+                label(for="password") Password:
+                input#password(type="password" name="password" required)
+            button(type="submit") Delete
+            
+        button#closeAcount Close
+    
+    form(action="/home/create_identity/"+uuid, method="POST")
+        .form-group
+            input#username(type="text" name="username" required value=""+name)
+  
+        .form-group
+            input#email(type="email" name="email" required value=""+email)
+  
+        .form-group
+            label(for="newpassword") New password:
+            input#password(type="password" name="newpassword")
+
+        button(type="submit") Create Identity
+  
+    
+    script(src="/javascripts/home.js")

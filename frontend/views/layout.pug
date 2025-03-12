@@ -11,10 +11,14 @@ html(lang="en")
         a(href="/" ID="index")
           img(src="/images/logo.png" alt="Logo") 
       ul.nav-links
-        // none conected users
-        li: a(href="/sign_up" ID="sign_up") sign up
-        li: a(href="/log_in" ID="log_in") log in
-        // conected users
+        if conected 
+          // conected users
+          a#openAcount(href="#") acount
+        else 
+          // none conected users
+          li: a(href="/sign_up" ID="sign_up") sign up
+          li: a(href="/log_in" ID="log_in") log in
+        
 
     block content
 
