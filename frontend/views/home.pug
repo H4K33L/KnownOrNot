@@ -52,7 +52,7 @@ block content
     
     for identity in identitys
         .identity-group
-            p name : #{identity.name}, email : #{identity.email}
+            a(href="/reports/"+uuid+"/"+identity.uuid) name : #{identity.name}, email : #{identity.email}
             form(action="/home/delete_identity/"+uuid+"/"+identity.uuid, method="POST") 
                 button(type="submit") Delete
 
