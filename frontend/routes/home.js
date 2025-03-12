@@ -7,13 +7,21 @@ const sqlite3 = require('sqlite3').verbose();
 router.get('/:id', async function(req, res, next) {
     const user_uuid = req.params.id;
     const db = new sqlite3.Database('./BDD/db.sqlite');
+    db.run("PRAGMA foreign_keys = ON;");
     await db.get("SELECT * FROM users WHERE uuid = ?", [user_uuid], async (err, row) => {
         if (err) {
           // add error message
           res.redirect('/');
           return;
         }
-        res.render('home', {conected : true, uuid : row.uuid, name : row.name, email : row.email});
+        db.all("SELECT * FROM identitys WHERE user_uuid = ?",[user_uuid],(err, rows) => {
+            if (err) {
+                // add error message
+                res.redirect('/');
+                return;
+            }
+            res.render('home', {conected : true, uuid : row.uuid, name : row.name, email : row.email, identitys : rows});
+        });
     });
 });
 
@@ -62,6 +70,7 @@ router.post('/delete/:id', async function(req, res, next) {
     const user_uuid = req.params.id;
     const { password } = req.body;
     const db = new sqlite3.Database('./BDD/db.sqlite');
+    db.run("PRAGMA foreign_keys = ON;");
     await db.get("SELECT * FROM users WHERE uuid = ?", [user_uuid], async (err, row) => {
     if (err || row === undefined) {
       // add error message
@@ -90,6 +99,7 @@ router.post('/create_identity/:id', async function(req, res, next) {
     const user_uuid = req.params.id;
     const { username, email, password } = req.body;
     const db = new sqlite3.Database('./BDD/db.sqlite');
+    db.run("PRAGMA foreign_keys = ON;");
     await db.get("SELECT * FROM users WHERE uuid = ?", [user_uuid], async (err, row) => {
         if (err || row === undefined) {
         // add error message
@@ -98,8 +108,8 @@ router.post('/create_identity/:id', async function(req, res, next) {
         }
         var identity_uuid = uuidv4();
         const salt = await bcrypt.genSalt();
+        console.log(salt,password,email, username);
         const hashedPassword = await bcrypt.hash(password, salt);
-        const db = new sqlite3.Database('./BDD/db.sqlite');
         await db.run("INSERT INTO identitys (uuid,user_uuid,name,email,pwd) VALUES (?,?,?,?,?)", [identity_uuid, user_uuid, username, email, hashedPassword], function(err) {
             if (err) {
                 // add error message
@@ -107,6 +117,29 @@ router.post('/create_identity/:id', async function(req, res, next) {
             }
             res.redirect('/home/'+row.uuid);
         });
+        await db.close;
+    });
+});
+
+router.post('/delete_identity/:id/:identityid', async function(req, res, next) {
+    const user_uuid = req.params.id;
+    const identity_uuid = req.params.identityid;
+    const db = new sqlite3.Database('./BDD/db.sqlite');
+    db.run("PRAGMA foreign_keys = ON;");
+    await db.get("SELECT * FROM users WHERE uuid = ?", [user_uuid], async (err, row) => {
+        if (err || row === undefined) {
+        // add error message
+        res.redirect('/');
+        return;
+        }
+        try {
+            await db.run("DELETE FROM identitys WHERE uuid = ?", [identity_uuid]);
+        } catch (err) {
+            //res.status(500).json({ error: "Failed to delete user" });
+            res.redirect('/home/'+row.uuid);
+            db.close;
+        }
+        res.redirect('/home/'+row.uuid);
         await db.close;
     });
 });

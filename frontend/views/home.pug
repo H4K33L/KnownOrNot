@@ -35,17 +35,25 @@ block content
         button#closeAcount Close
     
     form(action="/home/create_identity/"+uuid, method="POST")
+        p Identity informations :
         .form-group
-            input#username(type="text" name="username" required value=""+name)
+            label(for="username") username :
+            input#username(type="text" name="username" required)
   
         .form-group
-            input#email(type="email" name="email" required value=""+email)
+            label(for="email") email :
+            input#email(type="email" name="email" required)
   
         .form-group
-            label(for="newpassword") New password:
-            input#password(type="password" name="newpassword")
+            label(for="password") Password :
+            input#password(type="password" name="password")
 
         button(type="submit") Create Identity
-  
     
+    for identity in identitys
+        .identity-group
+            p name : #{identity.name}, email : #{identity.email}
+            form(action="/home/delete_identity/"+uuid+"/"+identity.uuid, method="POST") 
+                button(type="submit") Delete
+
     script(src="/javascripts/home.js")
