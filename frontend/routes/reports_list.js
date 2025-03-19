@@ -46,7 +46,7 @@ router.post('/create_report/:id/:identityid', async function(req, res, next) {
             
             var report_uuid = uuidv4();
             // api calls
-            const apiUrl = 'http://127.0.0.1:5000/osint_report?username='+rows.name+'?email='+rows.email+'?password='+rows.pwd;
+            const apiUrl = 'http://127.0.0.1:5000/osint_report?username='+rows.name+'&email='+rows.email+'&password='+rows.pwd;
             fetch(apiUrl)
                 .then(response => {
                     if (!response.ok) {
