@@ -45,6 +45,9 @@ router.post('/create_report/:id/:identityid', async function(req, res, next) {
             }
             
             var report_uuid = uuidv4();
+            var password_sentece = "";
+            var password_status = "";
+            var holehe = "";
             // api calls
             const apiUrl = 'http://127.0.0.1:5000/osint_report?username='+rows.name+'&email='+rows.email+'&password='+rows.pwd;
             fetch(apiUrl)
@@ -55,13 +58,15 @@ router.post('/create_report/:id/:identityid', async function(req, res, next) {
                     return response.json();
                 })
                 .then(data => {
-                    console.log(data);
+                    password_sentece = data.password_check.message;
+                    password_status = data.password_check.password_status;
+                    holehe = data.holehe.holehe_results;
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
 
-            await db.run("INSERT INTO reports (uuid,identity_uuid,danger_indice) VALUES (?,?,?)", [report_uuid,identity_uuid,0], function(err) {
+            await db.run("INSERT INTO reports (uuid,identity_uuid,password_sentece,password_status,holehe,date) VALUES (?,?,?,?,?,datetime('now'))", [report_uuid,identity_uuid,password_sentece,password_status,holehe], function(err) {
                 if (err) {
                     // add error message
                     res.redirect('/reports_list/'+user_uuid+'/'+identity_uuid);

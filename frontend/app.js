@@ -9,7 +9,7 @@ const db = new sqlite3.Database(dbPath);
 if (isNewDB) {
   db.run("CREATE TABLE users (uuid TEXT PRIMARY KEY, name TEXT, email TEXT UNIQUE, pwd TEXT)");
   db.run("CREATE TABLE identitys (uuid TEXT PRIMARY KEY, user_uuid TEXT, name TEXT, email TEXT, pwd TEXT, last_report DATETIME, FOREIGN KEY (user_uuid) REFERENCES users(uuid) ON DELETE CASCADE)");
-  db.run("CREATE TABLE reports (uuid TEXT PRIMARY KEY, identity_uuid TEXT, danger_indice INTEGER,FOREIGN KEY (identity_uuid) REFERENCES identitys(uuid) ON DELETE CASCADE)");
+  db.run("CREATE TABLE reports (uuid TEXT PRIMARY KEY, identity_uuid TEXT, password_sentece TEXT, password_status TEXT, holehe TEXT, date DATETIME,FOREIGN KEY (identity_uuid) REFERENCES identitys(uuid) ON DELETE CASCADE)");
 }
 db.close;
 
