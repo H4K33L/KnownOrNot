@@ -1,0 +1,61 @@
+extends layout
+
+block content
+  .container
+    h1 Your Account
+    #acountPopup.popup
+      .popup-content
+        h2 Update Account
+        form(action="/home/update/"+uuid, method="POST")
+          .form-group
+            label(for="username") Username:
+            input#username(type="text" name="username" required value=name)
+          .form-group
+            label(for="email") Email:
+            input#email(type="email" name="email" required value=email)
+          .form-group
+            label(for="newpassword") New password:
+            input#password(type="password" name="newpassword")
+          .form-group
+            label(for="confirm_newpassword") Confirm new password:
+            input#confirm-password(type="password" name="confirm_newpassword")
+          .form-group
+            label(for="password") Current Password:
+            input#password(type="password" name="password" required)
+          button(type="submit") Update
+        
+        h2 Delete Account
+        form(action="/home/delete/" + uuid, method="POST")
+          .form-group
+            label(for="password") Password:
+            input#password(type="password" name="password" required)
+          button.delete-btn(type="submit") Delete Account
+        
+        button#closeAcount.close-btn Close
+    
+    h2 Create New Identity
+    form.create-identity-form(action="/home/create_identity/"+uuid, method="POST")
+      h3 Identity Information:
+      .form-group
+        label(for="username") Username:
+        input#username(type="text" name="username" required)
+      .form-group
+        label(for="email") Email:
+        input#email(type="email" name="email" required)
+      .form-group
+        label(for="password") Password:
+        input#password(type="password" name="password")
+      button(type="submit") Create Identity
+    
+    h2 Your Identities
+    .identity-list
+      for identity in identitys
+        .identity-group
+          a.identity-link(href="/reports_list/"+uuid+"/"+identity.uuid, style=getColorStyle(identity))
+            span.identity-name= identity.name
+            span.identity-email= identity.email
+          form.delete-identity-form(action="/home/delete_identity/"+uuid+"/"+identity.uuid, method="POST") 
+            button.delete-btn(type="submit") Delete
+
+  script(src="/javascripts/home.js")
+

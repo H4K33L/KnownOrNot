@@ -1,0 +1,26 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title= title
+
+  body
+    #pdf-content
+      h1 My PDF Document
+      p #{report.danger_indice}
+    
+    button(onclick="generatePDF()") Generate PDF
+
+    script.
+      function generatePDF() {
+        const element = document.getElementById('pdf-content');
+        const options = {
+          filename: 'my-document.pdf',
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        
+        html2pdf().from(element).set(options).save();
+      }
+      
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js")

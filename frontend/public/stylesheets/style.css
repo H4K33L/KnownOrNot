@@ -1,125 +1,348 @@
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-
-/* General Styles */
-body {
-    font-family: 'Share Tech Mono', monospace;
-    background-color: #000000; /* Deep black background */
-    color: #00ff99; /* Subtle green (matrix-style) */
-    text-align: center;
-    padding: 40px;
+/* Reset and base styles */
+* {
     margin: 0;
-}
-
-/* Navbar */
-.navbar {
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    line-height: 1;
+    color: #333;
+    background-color: #f4f4f4;
+  }
+  
+  /* Container */
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+  
+  /* Typography */
+  h1, h2, h3 {
+    margin-bottom: 1rem;
+  }
+  
+  /* Navigation */
+  .navbar {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(0, 0, 0, 0.8); /* Subtle transparency */
-    padding: 12px 25px;
-    border-bottom: 1px solid #008f11; /* Thin green line */
-}
-
-/* Navbar Logo */
-.navbar .logo img {
-    height: 40px; /* Small and subtle */
-    width: auto;
-    opacity: 0.85; /* Soft presence */
-}
-
-/* Navigation Links */
-.nav-links {
+  }
+  
+  .logo img {
+    height: 40px;
+  }
+  
+  .nav-links {
     list-style: none;
     display: flex;
-    gap: 12px;
-}
-
-.nav-links a {
-    color: #00ff99;
-    text-decoration: none;
-    font-size: 14px;
-    padding: 4px 10px;
-    transition: 0.2s ease-in-out;
-    border-radius: 3px;
-    opacity: 0.85;
-}
-
-/* Hover Effect - Thin Green Glow */
-.nav-links a:hover {
-    color: #00cc66;
-    text-shadow: 0px 0px 5px #00cc66;
-    transform: scale(1.05);
-}
-
-/* Hero Section */
-.hero {
+  }
+  
+  .nav-links li {
+    margin-left: 1rem;
+  }
+  
+  .nav-links a {
     display: flex;
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-links a:hover {
+    color: #ddd;
+  }
+  
+  /* Box layout */
+  .box {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 2rem auto;
+    max-width: 600px;
+    padding: 2rem;
+  }
+  
+  .box-content {
+    text-align: center;
+  }
+  
+  .box-image {
+    max-width: 200px;
+    margin-bottom: 1rem;
+  }
+  
+  /* Buttons */
+  .cta-btn, button[type="submit"], button {
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1rem;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .cta-btn:hover, button[type="submit"]:hover, button:hover {
+    background-color: #0056b3;
+  }
+  
+  .delete-btn {
+    background-color: #dc3545;
+  }
+  
+  .delete-btn:hover {
+    background-color: #c82333;
+  }
+  
+  .close-btn {
+    background-color: #6c757d;
+  }
+  
+  .close-btn:hover {
+    background-color: #5a6268;
+  }
+  
+  /* Forms */
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+  }
+  
+  textarea {
+    min-height: 100px;
+  }
+  
+  /* Popup */
+  .popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: none;
     justify-content: center;
     align-items: center;
-    height: 75vh;
-    text-align: center;
-    background-color: #000000;
-}
-
-/* Hero Content */
-.hero-content {
-    max-width: 500px;
-    padding: 15px;
+  }
+  
+  .popup-content {
+    background-color: #fff;
     border-radius: 5px;
-    border: 1px solid #008f11;
-    box-shadow: 0px 0px 8px rgba(0, 143, 17, 0.2);
-    opacity: 0.9;
-}
-
-.hero h1 {
-    font-size: 28px;
-    color: #00ff99;
-    letter-spacing: 1px;
-}
-
-.hero p {
-    font-size: 14px;
-    opacity: 0.75;
-}
-
-.hero-logo {
-    max-width: 120px; /* Adjust the size */
-    height: auto; /* Maintain aspect ratio */
-    opacity: 0.9;
-    filter: drop-shadow(0px 0px 5px #00ff99);
-}
-
-/* Cyber Minimalist Button */
-.cta-btn {
-    display: inline-block;
-    margin-top: 12px;
-    padding: 6px 14px;
-    background: none;
-    color: #00ff99;
-    font-size: 14px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    width: 90%;
+    padding: 2rem;
+    position: relative;
+  }
+  
+  /* Identity and Report groups */
+  .identity-group,
+  .report-group {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .identity-link,
+  .report-link {
+    color: #333;
     text-decoration: none;
-    border: 1px solid #00ff99;
-    border-radius: 3px;
-    transition: 0.3s ease-in-out;
-    font-weight: bold;
-}
-
-.cta-btn:hover {
-    background-color: #00ff99;
-    color: black;
-    box-shadow: 0px 0px 8px #00ff99;
-}
-
-/* Matrix-Style Blinking Cursor */
-@keyframes cursorBlink {
-    50% { opacity: 0; }
-}
-
-.cursor {
+    flex-grow: 1;
+  }
+  
+  .identity-name,
+  .identity-email,
+  .report-danger {
     display: inline-block;
-    width: 6px;
-    height: 14px;
-    background-color: #00ff99;
-    margin-left: 5px;
-    animation: cursorBlink 1s infinite;
-}
+    margin-right: 1rem;
+  }
+  
+  .delete-identity-form,
+  .delete-report-form {
+    flex-shrink: 0;
+  }
+  
+  /* Flexbox layout */
+  .flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .flex-item {
+    flex: 1 1 300px;
+    margin: 0.5rem;
+  }
+  
+  /* Responsive table */
+  .responsive-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .responsive-table th,
+  .responsive-table td {
+    padding: 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* Responsive images */
+  .responsive-image {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Hamburger menu for mobile */
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  /* Media Queries */
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+    }
+  
+    .nav-links {
+      margin-top: 1rem;
+      flex-direction: column;
+      align-items: center;
+      display: none;
+    }
+  
+    .nav-links.active {
+      display: flex;
+    }
+  
+    .nav-links li {
+      margin: 0.5rem 0;
+    }
+  
+    .box {
+      margin: 1rem;
+      padding: 1rem;
+    }
+  
+    .box-image {
+      max-width: 150px;
+    }
+  
+    .popup-content {
+      margin: 5% auto;
+      max-width: 90%;
+    }
+  
+    .identity-group,
+    .report-group {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .delete-identity-form,
+    .delete-report-form {
+      margin-top: 1rem;
+    }
+  
+    .menu-toggle {
+      display: block;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    body {
+      font-size: 14px;
+    }
+  
+    .navbar {
+      padding: 0.5rem;
+    }
+  
+    .logo img {
+      height: 30px;
+    }
+  
+    .box {
+      margin: 0.5rem;
+      padding: 0.5rem;
+    }
+  
+    .box-image {
+      max-width: 100px;
+    }
+  
+    .cta-btn, button[type="submit"] {
+      font-size: 0.9rem;
+      padding: 0.4rem 0.8rem;
+    }
+  
+    .identity-group,
+    .report-group {
+      padding: 0.5rem;
+    }
+  
+    .identity-group form,
+    .report-group form {
+      margin-left: 0;
+      margin-top: 0.5rem;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .responsive-table thead {
+      display: none;
+    }
+  
+    .responsive-table tr {
+      display: block;
+      margin-bottom: 0.5rem;
+      border: 1px solid #ddd;
+    }
+  
+    .responsive-table td {
+      display: block;
+      text-align: right;
+    }
+  
+    .responsive-table td::before {
+      content: attr(data-label);
+      float: left;
+      font-weight: bold;
+    }
+  }
+  
