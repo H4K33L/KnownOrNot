@@ -33,7 +33,7 @@ def run_sherlock():
 
         os.remove("results.json")
         
-        return jsonify({"output": sherlock_data})
+        return jsonify({"sherlock_results": sherlock_data})
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -57,37 +57,53 @@ def run_holehe():
 
         raw_output = result.stdout.strip()
 
-        print("Raw Holehe Output:", raw_output)
+        print("Raw Holehe Output:", raw_output) 
 
-        try:
-            parsed_data = json.loads(raw_output)
-        except json.JSONDecodeError:
-            return jsonify({"error": "Invalid JSON response from Holehe", "raw_output": raw_output}), 500
-
-        return jsonify({"output": parsed_data})
+        return jsonify({"holehe_results": raw_output})
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-def check_password(password):
-
+@app.route('/check_password', methods=['GET'])
+def check_password():
     password = request.args.get('password')
-    sha1_hash = hashlib.sha1(password.encode()).hexdigest().upper()
 
+    if not password:
+        return jsonify({"error": "Password is required"}), 400
+
+    sha1_hash = hashlib.sha1(password.encode()).hexdigest().upper()
     prefix, suffix = sha1_hash[:5], sha1_hash[5:]
 
     url = f"https://api.pwnedpasswords.com/range/{prefix}"
     response = requests.get(url)
 
     if response.status_code != 200:
-        raise RuntimeError(f"Error fetching data: {response.status_code}")
+        return jsonify({"error": f"Error fetching data: {response.status_code}"}), 500
 
     hashes = (line.split(':') for line in response.text.splitlines())
     for h, count in hashes:
         if h == suffix:
-            return f"Password has been found {count} times in data breaches! Change it immediately."
+            return jsonify({
+                "password_status": "Compromised",
+                "breach_count": count,
+                "message": f"⚠️ Password found in {count} data breaches! Change it immediately."
+            })
 
-    return "Password is safe (not found in breaches)."
+    return jsonify({"password_status": "Safe", "message": "✅ Password is not found in any known breaches."})
+
+@app.route('/osint_report', methods=['GET'])
+def osint_report():
+    username = request.args.get('username')
+    email = request.args.get('email')
+    password = request.args.get('password')
+
+    holehe_response = requests.get(f"http://127.0.0.1:5000/holehe?email={email}").json()
+    password_response = requests.get(f"http://127.0.0.1:5000/check_password?password={password}").json()
+
+    return jsonify({
+        "holehe": holehe_response,
+        "password_check": password_response
+    })
 
 if __name__ == '__main__':
     app.run(debug=True)
