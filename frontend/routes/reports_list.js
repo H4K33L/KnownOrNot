@@ -50,7 +50,7 @@ router.post('/create_report/:id/:identityid', async function(req, res, next) {
             var holehe = "";
             // api calls
             const apiUrl = 'http://127.0.0.1:5000/osint_report?username='+rows.name+'&email='+rows.email+'&password='+rows.pwd;
-            fetch(apiUrl)
+            await fetch(apiUrl)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
