@@ -97,12 +97,10 @@ def osint_report():
     email = request.args.get('email')
     password = request.args.get('password')
 
-    sherlock_response = requests.get(f"http://127.0.0.1:5000/sherlock?username={username}").json()
     holehe_response = requests.get(f"http://127.0.0.1:5000/holehe?email={email}").json()
     password_response = requests.get(f"http://127.0.0.1:5000/check_password?password={password}").json()
 
     return jsonify({
-        "sherlock": sherlock_response,
         "holehe": holehe_response,
         "password_check": password_response
     })
