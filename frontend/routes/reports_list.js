@@ -45,6 +45,22 @@ router.post('/create_report/:id/:identityid', async function(req, res, next) {
             }
             
             var report_uuid = uuidv4();
+            // api calls
+            const apiUrl = 'http://127.0.0.1:5000/osint_report?username='+rows.name+'?email='+rows.email+'?password='+rows.pwd;
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
             await db.run("INSERT INTO reports (uuid,identity_uuid,danger_indice) VALUES (?,?,?)", [report_uuid,identity_uuid,0], function(err) {
                 if (err) {
                     // add error message
