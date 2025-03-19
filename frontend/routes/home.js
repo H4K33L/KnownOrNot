@@ -20,7 +20,13 @@ router.get('/:id', async function(req, res, next) {
                 res.redirect('/');
                 return;
             }
-            res.render('home', {conected : true, uuid : row.uuid, name : row.name, email : row.email, identitys : rows});
+            var getColorStyle = function getColorStyle(identity) {
+                const now = new Date();
+                const lastTimeDate = new Date(identity.last_report);
+                const diffDays = Math.floor((now - lastTimeDate) / (1000 * 60 * 60 * 24));
+                return diffDays > 7 ? 'color: red;' : 'color: green;';
+            };
+            res.render('home', {conected : true, uuid : row.uuid, name : row.name, email : row.email, identitys : rows, getColorStyle : getColorStyle});
         });
     });
 });

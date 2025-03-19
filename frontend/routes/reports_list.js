@@ -21,7 +21,7 @@ router.get('/:id/:identityid', async function(req, res, next) {
                 res.redirect('/home/'+user_uuid);
                 return;
             }
-            res.render('reports', {conected : true, uuid : user_uuid, identity_uuid : identity_uuid, reports : rows});
+            res.render('reports_list', {conected : true, uuid : user_uuid, identity_uuid : identity_uuid, reports : rows});
         });
     });
 });
@@ -48,15 +48,15 @@ router.post('/create_report/:id/:identityid', async function(req, res, next) {
             await db.run("INSERT INTO reports (uuid,identity_uuid,danger_indice) VALUES (?,?,?)", [report_uuid,identity_uuid,0], function(err) {
                 if (err) {
                     // add error message
-                    res.redirect('/reports/'+user_uuid+'/'+identity_uuid);
+                    res.redirect('/reports_list/'+user_uuid+'/'+identity_uuid);
                 }
                 db.run("UPDATE identitys SET last_report = datetime('now') WHERE uuid = ?",[identity_uuid], function(err) {
                     if (err) {
                         // add error message
-                        res.redirect('/reports/'+user_uuid+'/'+identity_uuid);
+                        res.redirect('/reports_list/'+user_uuid+'/'+identity_uuid);
                     }
                   });
-                res.redirect('/reports/'+user_uuid+'/'+identity_uuid);
+                res.redirect('/reports_list/'+user_uuid+'/'+identity_uuid);
             });
             await db.close;
         });
@@ -86,10 +86,10 @@ router.post('/delete_report/:id/:identityid/:report_uuid', async function(req, r
                 db.run("DELETE FROM reports WHERE uuid = ?", [report_uuid]);
             } catch (err) {
                 //res.status(500).json({ error: "Failed to delete user" });
-                res.redirect('/reports/'+user_uuid+'/'+identity_uuid);
+                res.redirect('/reports_list/'+user_uuid+'/'+identity_uuid);
                 db.close;
             }
-            res.redirect('/reports/'+user_uuid+'/'+identity_uuid);
+            res.redirect('/reports_list/'+user_uuid+'/'+identity_uuid);
             await db.close;
         });
     });

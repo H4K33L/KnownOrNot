@@ -1,0 +1,11 @@
+extends layout
+
+block content
+    form(action="/reports_list/create_report/"+uuid+"/"+identity_uuid, method="POST")
+        button(type="submit") Create report
+    
+    for report in reports
+        .report-group
+            a(href="/report/"+uuid+"/"+identity_uuid+"/"+report.uuid, target="_blank") danger : #{report.danger_indice}
+            form(action="/reports_list/delete_report/"+uuid+"/"+identity_uuid+"/"+report.uuid, method="POST") 
+                button(type="submit") Delete

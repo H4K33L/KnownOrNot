@@ -24,7 +24,8 @@ var aboutRouter = require("./routes/about");
 var log_inRouter = require("./routes/log_in");
 var sign_inRouter = require("./routes/sign_up");
 var homeRouter = require('./routes/home');
-var reportsRouter = require('./routes/reports');
+var reports_listRouter = require('./routes/reports_list');
+var reportRouter = require('./routes/report');
 
 var app = express();
 
@@ -43,7 +44,8 @@ app.use('/about', aboutRouter);
 app.use('/log_in', log_inRouter);
 app.use('/sign_up', sign_inRouter);
 app.use('/home', homeRouter);
-app.use('/reports', reportsRouter);
+app.use('/reports_list', reports_listRouter);
+app.use('/report', reportRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
