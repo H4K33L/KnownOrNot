@@ -30,88 +30,55 @@ router.post('/create_report/:id/:identityid', async function(req, res, next) {
     const user_uuid = req.params.id;
     const identity_uuid = req.params.identityid;
     const db = new sqlite3.Database('./BDD/db.sqlite');
-
-    try {
-        // Enable foreign key constraints
-        await new Promise((resolve, reject) => {
-            db.run("PRAGMA foreign_keys = ON;", (err) => {
-                if (err) reject(err);
-                else resolve();
-            });
-        });
-
-        // Check if user exists
-        const user = await new Promise((resolve, reject) => {
-            db.get("SELECT * FROM users WHERE uuid = ?", [user_uuid], (err, row) => {
-                if (err) reject(err);
-                else resolve(row);
-            });
-        });
-
-        if (!user) {
-            return res.redirect('/');
+    db.run("PRAGMA foreign_keys = ON;");
+    await db.get("SELECT * FROM users WHERE uuid = ?", [user_uuid], async (err, row) => {
+        if (err || row === undefined) {
+        // add error message
+        res.redirect('/');
+        return;
         }
+        db.get("SELECT * FROM identitys WHERE uuid = ?",[identity_uuid], async (err, rows) => {
+            if (err) {
+                // add error message
+                res.redirect('/home/'+user_uuid);
+                return;
+            }
+            
+            var report_uuid = uuidv4();
+            var password_sentence = "";
+            var password_status = "";
+            var holehe = "";
+            // api calls
+            const apiUrl = `http://127.0.0.1:5000/osint_report?username=${rows.name}&email=${rows.email}&password=${rows.pwd}`;
+            const response = await fetch(apiUrl);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            console.log(data);
+            console.log(data.password_check.message);
+            console.log(data.holehe.holehe_results);
+            password_sentence = data.password_check.message;
+            password_status = data.password_check.password_status;
+            holehe = data.holehe.holehe_results;
 
-        // Get identity information
-        const identity = await new Promise((resolve, reject) => {
-            db.get("SELECT * FROM identitys WHERE uuid = ?", [identity_uuid], (err, row) => {
-                if (err) reject(err);
-                else resolve(row);
-            });
-        });
-
-        if (!identity) {
-            return res.redirect('/home/' + user_uuid);
-        }
-
-        // API call
-        const apiUrl = `http://127.0.0.1:5000/osint_report?username=${identity.name}&email=${identity.email}&password=${identity.pwd}`;
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-
-        const report_uuid = uuidv4();
-        const password_sentence = data.password_check.message;
-        const password_status = data.password_check.password_status;
-        const holehe = data.holehe.holehe_results;
-
-        // Insert report
-        await new Promise((resolve, reject) => {
-            db.run("INSERT INTO reports (uuid,identity_uuid,password_sentece,password_status,holehe,date) VALUES (?,?,?,?,?,datetime('now'))", 
-                [report_uuid, identity_uuid, password_sentence, password_status, holehe], 
-                (err) => {
-                    if (err) reject(err);
-                    else resolve();
+            await db.run("INSERT INTO reports (uuid,identity_uuid,password_sentece,password_status,holehe,date) VALUES (?,?,?,?,?,datetime('now'))", [report_uuid,identity_uuid,password_sentence,password_status,holehe], function(err) {
+                if (err) {
+                    // add error message
+                    res.redirect('/reports_list/'+user_uuid+'/'+identity_uuid);
                 }
-            );
+                db.run("UPDATE identitys SET last_report = datetime('now') WHERE uuid = ?",[identity_uuid], function(err) {
+                    if (err) {
+                        // add error message
+                        res.redirect('/reports_list/'+user_uuid+'/'+identity_uuid);
+                    }
+                  });
+                res.redirect('/reports_list/'+user_uuid+'/'+identity_uuid);
+            });
+            await db.close;
         });
-
-        // Update identity
-        await new Promise((resolve, reject) => {
-            db.run("UPDATE identitys SET last_report = datetime('now') WHERE uuid = ?",
-                [identity_uuid], 
-                (err) => {
-                    if (err) reject(err);
-                    else resolve();
-                }
-            );
-        });
-
-        res.redirect('/reports_list/' + user_uuid + '/' + identity_uuid);
-
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).send('An error occurred');
-    } finally {
-        // Close the database connection
-        db.close((err) => {
-            if (err) console.error('Error closing database:', err);
-        });
-    }
+    });
 });
-
 
 router.post('/delete_report/:id/:identityid/:report_uuid', async function(req, res, next) {
     const user_uuid = req.params.id;
