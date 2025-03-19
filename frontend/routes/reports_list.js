@@ -49,22 +49,15 @@ router.post('/create_report/:id/:identityid', async function(req, res, next) {
             var password_status = "";
             var holehe = "";
             // api calls
-            const apiUrl = 'http://127.0.0.1:5000/osint_report?username='+rows.name+'&email='+rows.email+'&password='+rows.pwd;
-            await fetch(apiUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    password_sentece = data.password_check.message;
-                    password_status = data.password_check.password_status;
-                    holehe = data.holehe.holehe_results;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+            const apiUrl = `http://127.0.0.1:5000/osint_report?username=${rows.name}&email=${rows.email}&password=${rows.pwd}`;
+            const response = await fetch(apiUrl);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            password_sentence = data.password_check.message;
+            password_status = data.password_check.password_status;
+            holehe = data.holehe.holehe_results;
 
             await db.run("INSERT INTO reports (uuid,identity_uuid,password_sentece,password_status,holehe,date) VALUES (?,?,?,?,?,datetime('now'))", [report_uuid,identity_uuid,password_sentece,password_status,holehe], function(err) {
                 if (err) {
