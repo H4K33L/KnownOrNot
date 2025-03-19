@@ -37,7 +37,7 @@ router.post('/create_report/:id/:identityid', async function(req, res, next) {
         res.redirect('/');
         return;
         }
-        db.all("SELECT * FROM identitys WHERE uuid = ?",[identity_uuid], async (err, rows) => {
+        db.get("SELECT * FROM identitys WHERE uuid = ?",[identity_uuid], async (err, rows) => {
             if (err) {
                 // add error message
                 res.redirect('/home/'+user_uuid);
