@@ -7,8 +7,11 @@ html(lang="en")
 
   body
     #pdf-content
-      h1 My PDF Document
-      p #{report.danger_indice}
+      h1 Report day : #{report.date}
+      p #{report.password_sentece}
+      p #{report.password_status}
+
+      p #{report.holehe}
     
     button(onclick="generatePDF()") Generate PDF
 

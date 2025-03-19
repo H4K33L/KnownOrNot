@@ -11,6 +11,6 @@ block content
       for report in reports
         .report-group
           a.report-link(href="/report/"+uuid+"/"+identity_uuid+"/"+report.uuid, target="_blank")
-            span.report-danger Danger Index: #{report.danger_indice}
+            span.report-danger Report date: #{report.date}
           form.delete-report-form(action="/reports_list/delete_report/"+uuid+"/"+identity_uuid+"/"+report.uuid, method="POST") 
             button.delete-btn(type="submit") Delete
