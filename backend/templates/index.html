@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sherlock OSINT Lookup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            max-width: 400px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .results {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>OSINT Search Tool</h2>
+
+    <!-- Email Search (Holehe) -->
+    <label for="email">Email:</label>
+    <input type="email" id="email" placeholder="Enter email">
+    <button onclick="searchHolehe()">Search Holehe</button>
+    <div id="emailResults"></div>
+
+    <!-- Username Search (Sherlock) -->
+    <label for="username">Username:</label>
+    <input type="text" id="username" placeholder="Enter username">
+    <button onclick="searchSherlock()">Search Sherlock</button>
+    <div id="usernameResults"></div>
+
+    <!-- Password Search (HIBP) -->
+    <label for="password">Password:</label>
+    <input type="password" id="password" placeholder="Enter password">
+    <button onclick="checkPassword()">Check Password</button>
+    <div id="passwordResults"></div>
+
+    <script>
+        async function searchHolehe() {
+            const email = document.getElementById("email").value;
+            const resultsDiv = document.getElementById("emailResults");
+            resultsDiv.innerHTML = ""; // Clear previous results
+
+            if (!email) {
+                resultsDiv.innerHTML = '<p class="error">Please enter an email.</p>';
+                return;
+            }
+
+            resultsDiv.innerHTML = "<p>Searching...</p>";
+
+            try {
+                const response = await fetch(`/holehe?email=${encodeURIComponent(email)}`);
+                const data = await response.json();
+
+                if (data.error) {
+                    resultsDiv.innerHTML = `<p class="error">${data.error}</p>`;
+                } else {
+                    resultsDiv.innerHTML = `<pre>${JSON.stringify(data.output, null, 2)}</pre>`;
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            }
+        }
+
+        async function searchSherlock() {
+            const username = document.getElementById("username").value;
+            const resultsDiv = document.getElementById("usernameResults");
+            resultsDiv.innerHTML = ""; // Clear previous results
+
+            if (!username) {
+                resultsDiv.innerHTML = '<p class="error">Please enter a username.</p>';
+                return;
+            }
+
+            resultsDiv.innerHTML = "<p>Searching...</p>";
+
+            try {
+                const response = await fetch(`/sherlock?username=${encodeURIComponent(username)}`);
+                const data = await response.json();
+
+                if (data.error) {
+                    resultsDiv.innerHTML = `<p class="error">${data.error}</p>`;
+                } else {
+                    resultsDiv.innerHTML = `<pre>${JSON.stringify(data.output, null, 2)}</pre>`;
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            }
+        }
+
+        async function checkPassword() {
+            const password = document.getElementById("password").value;
+            const resultsDiv = document.getElementById("passwordResults");
+            resultsDiv.innerHTML = ""; // Clear previous results
+
+            if (!password) {
+                resultsDiv.innerHTML = '<p class="error">Please enter a password.</p>';
+                return;
+            }
+
+            resultsDiv.innerHTML = "<p>Checking...</p>";
+
+            // Hash the password using SHA-1
+            const sha1Hash = await sha1(password);
+            const prefix = sha1Hash.slice(0, 5);
+            const suffix = sha1Hash.slice(5).toUpperCase();
+
+            try {
+                const response = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`);
+                const text = await response.text();
+                
+                // Check if the suffix exists in the response
+                const found = text.split("\n").find(line => line.split(":")[0] === suffix);
+                
+                if (found) {
+                    const count = found.split(":")[1];
+                    resultsDiv.innerHTML = `<p class="error">Password found in ${count} breaches! Use a different password.</p>`;
+                } else {
+                    resultsDiv.innerHTML = "<p class='success'>Password is safe (not found in breaches).</p>";
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            }
+        }
+
+        async function sha1(str) {
+            const buffer = new TextEncoder().encode(str);
+            const hashBuffer = await crypto.subtle.digest("SHA-1", buffer);
+            return Array.from(new Uint8Array(hashBuffer))
+                .map(b => b.toString(16).padStart(2, "0"))
+                .join("")
+                .toUpperCase();
+        }
+    </script>
+</body>
+
+    
+</html>
