@@ -4,7 +4,7 @@ var acountPopup = document.getElementById('acountPopup');
 
 openAcount.addEventListener('click', function(e) {
   e.preventDefault();
-  acountPopup.style.display = 'block';
+  acountPopup.style.display = 'flex';
 });
 
 closeAcount.addEventListener('click', function() {

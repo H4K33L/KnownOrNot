@@ -4,7 +4,7 @@ var termsPopup = document.getElementById('termsPopup');
 
 openTerms.addEventListener('click', function(e) {
   e.preventDefault();
-  termsPopup.style.display = 'block';
+  termsPopup.style.display = 'flex';
 });
 
 closeTerms.addEventListener('click', function() {

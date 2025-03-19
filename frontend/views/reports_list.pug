@@ -1,11 +1,16 @@
 extends layout
 
 block content
-    form(action="/reports_list/create_report/"+uuid+"/"+identity_uuid, method="POST")
-        button(type="submit") Create report
+  .container
+    h1 Reports List
+    .create-report
+      form(action="/reports_list/create_report/"+uuid+"/"+identity_uuid, method="POST")
+        button.create-btn(type="submit") Create New Report
     
-    for report in reports
+    .report-list
+      for report in reports
         .report-group
-            a(href="/report/"+uuid+"/"+identity_uuid+"/"+report.uuid, target="_blank") danger : #{report.danger_indice}
-            form(action="/reports_list/delete_report/"+uuid+"/"+identity_uuid+"/"+report.uuid, method="POST") 
-                button(type="submit") Delete
+          a.report-link(href="/report/"+uuid+"/"+identity_uuid+"/"+report.uuid, target="_blank")
+            span.report-danger Danger Index: #{report.danger_indice}
+          form.delete-report-form(action="/reports_list/delete_report/"+uuid+"/"+identity_uuid+"/"+report.uuid, method="POST") 
+            button.delete-btn(type="submit") Delete
