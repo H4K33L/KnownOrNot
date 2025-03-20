@@ -101,6 +101,7 @@ def osint_report():
     password_response = requests.get(f"http://127.0.0.1:5000/check_password?password={password}").json()
 
     return jsonify({
+        "email": email,
         "holehe": holehe_response,
         "password_check": password_response
     })
