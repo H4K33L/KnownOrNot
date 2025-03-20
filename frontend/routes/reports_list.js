@@ -66,11 +66,13 @@ router.post('/create_report/:id/:identityid', async function(req, res, next) {
                 if (err) {
                     // add error message
                     res.redirect('/reports_list/'+user_uuid+'/'+identity_uuid);
+                    return;
                 }
                 db.run("UPDATE identitys SET last_report = datetime('now') WHERE uuid = ?",[identity_uuid], function(err) {
                     if (err) {
                         // add error message
                         res.redirect('/reports_list/'+user_uuid+'/'+identity_uuid);
+                        return;
                     }
                   });
                 res.redirect('/reports_list/'+user_uuid+'/'+identity_uuid);
