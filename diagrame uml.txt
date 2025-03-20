@@ -1,0 +1,36 @@
++--------------+
+|   Users      |
++--------------+
+| uuid (PK)    |
+| name         |
+| email (UQ)   |
+| pwd          |
++--------------+
+       |
+       | 1
+       | 
+       | N
++----------------+
+|  Identities    |
++----------------+
+| uuid (PK)      |
+| user_uuid (FK) |
+| name           |
+| email          |
+| pwd           |
+| last_report    |
++----------------+
+       |
+       | 1
+       | 
+       | N
++----------------+
+|   Reports      |
++----------------+
+| uuid (PK)      |
+| identity_uuid (FK) |
+| password_sentence  |
+| password_status    |
+| holehe            |
+| date             |
++----------------+
