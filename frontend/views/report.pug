@@ -3,19 +3,28 @@ html(lang="en")
   head
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet" href="/stylesheets/report.css")
     title= title
 
   body
     #pdf-content
-      h1 Report day : #{report.date}
+      h1 Report date: #{report.date}
       p #{report.password_sentece}
       p #{report.password_status}
 
-      p #{report.holehe}
-    
-    button(onclick="generatePDF()") Generate PDF
+      h2(id="holehe-header") 📧 Websites associated with this email account
+      pre(id="filtered-holehe") Loading accounts found...
+
+    button(id="pdf-button" onclick="generatePDF()") Generate PDF
 
     script.
+      document.addEventListener("DOMContentLoaded", function() {
+        const rawHoleheData = `#{report.holehe}`;
+        const lines = rawHoleheData.split("\n");
+        const filteredResults = lines.filter(line => line.includes("[+]"));
+        document.getElementById("filtered-holehe").textContent = filteredResults.join("\n");
+      });
+
       function generatePDF() {
         const element = document.getElementById('pdf-content');
         const options = {
