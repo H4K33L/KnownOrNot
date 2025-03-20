@@ -10,6 +10,8 @@
     - [2. Install Node.js \& Dependencies](#2-install-nodejs--dependencies)
       - [🔹 Install Frontend Dependencies](#-install-frontend-dependencies)
     - [3. Directory Structure 🗂️](#3-directory-structure-️)
+  - [Run The Application 🚀](#run-the-application-)
+    - [🔹 **Start the Flask Backend**](#-start-the-flask-backend)
     - [🔹 **Start the Express.js Frontend**](#-start-the-expressjs-frontend)
   - [License 📝](#license-)
 
@@ -94,7 +96,7 @@ Known-or-Not/
 │   ├── server.js           # Express.js server entry point
 │
 └── README.md               # Project documentation
-
+```
 ---
 
 ## Run The Application 🚀
